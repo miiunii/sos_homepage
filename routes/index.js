@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.post('/postImg', upload.single('img'), (req, res, next) => {
+router.post('/postImg', uploadOption.single('img'), (req, res, next) => {
   console.log(req.file)
 })
 
