@@ -7,21 +7,17 @@ $('#loginButton').on('click', () => {
     }
     else {
         $.ajax({
-            url: "login/loginProcess",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            url: "https://lgri839rll.execute-api.ap-northeast-2.amazonaws.com/complete/building/login",
             dataType: "json",
             data: {
-                "id": userId,
-                "password": userPassword
+                "id": userId
             },
             type: "POST",
             success: (result) => {
-                if (result.msg == 'success') {
-                    window.location.href = '/buildings'
-                }
-                else {
-                    console.log('login proceess error', result.msg)
-                    alert('ID나 비밀번호가 다릅니다!')
-                }
+              console.log(result)
             },
             error: (request, status, error) => {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error)

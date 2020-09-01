@@ -7,11 +7,10 @@ AWS.config.update({
   region: 'ap-northeast-2',
   accessKeyId: config.accessKeyId,
   secretAccessKey: config.secretAccessKey
-  //endpoint: 'http://localhost:3000/login'
-  //endpoint: 'http://13.125.0.37'
-  //endpoint: 'http://172.31.47.65'
 });
-var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+//var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+var docClient = new AWS.DynamoDB.DocumentClient();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -42,7 +41,7 @@ async function getUserData(id) {
       }
     };
     
-    dynamodb.getItem(params, (err, data) => {
+      docClient.get(params, (err, data) => {
       if (err) {
         console.log('dynamodb get item error')
         throw err
