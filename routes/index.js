@@ -4,7 +4,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 const path = require('path');
-AWS.config.loadFromPath('/Users/corgi/Desktop/sos_homepage/config/awsconfig.json');
+//AWS.config.loadFromPath('/Users/corgi/Desktop/sos_homepage/config/awsconfig.json');
 //AWS.config.loadFromPath('/root/sos_homepage/config/awsconfig.json');
 const s3 = new AWS.S3();
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -38,18 +38,6 @@ router.post('/postImg', uploadOption.single('img'), (req, res, next) => {
 
 /* GET IMAGE*/
 router.post('/list', (req, res, next) => {
-  // let param = {
-  //   Bucket: 'sos-homepage-s3'
-  // }
-  // const response = s3.listObjectsV2(param, (err, data) => {
-  //   if (err) {
-  //     console.log('err \n', err)
-  //   }
-  //   else {
-  //     console.log('data \n', data)
-  //   }
-  // })
-  // res.send(response)
   s3.getObject(getObjectParam, (err, data) => {
     if (err) {
       console.log(err)

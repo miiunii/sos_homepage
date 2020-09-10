@@ -1,16 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var AWS = require('aws-sdk');
-var config = require('/Users/corgi/Desktop/sos_homepage/config/awsconfig.json');
-//var config = require('/root/sos_homepage/config/awsconfig.json');
-AWS.config.update({
-  region: 'ap-northeast-2',
-  accessKeyId: config.accessKeyId,
-  secretAccessKey: config.secretAccessKey
-});
+const axios = require('axios');
 
-//var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-var docClient = new AWS.DynamoDB.DocumentClient();
+// cors 허용
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -20,38 +17,32 @@ router.get('/', function(req, res, next) {
 /* CHECK user data */
 router.post('/loginProcess', async(req, res, next) => {
   try{
-    let queryData = await getUserData(req.body.id);
-    console.log(queryData)
-    res.json({
-      msg: "success"
+    axios.post('https://lgri839rll.execute-api.ap-northeast-2.amazonaws.com/complete/building/login', {
+      id: req.body.id
+    })
+    .then((result) => {
+      if(result.data.Item == undefined) {
+        res.send('no data')
+      }
+      else {
+        if (result.data.Item.password == req.body.password) {
+          req.session.organNum = result.data.Item.organNum
+          req.session.companyName = result.data.Item.company
+          req.session.login = true
+          res.send('success')
+        }
+        else {
+          res.send('check again')
+        }
+      }
+    })
+    .catch((error) => {
+      console.log('check user data error \n', error);
     })
   }
   catch (err) {
     throw err
   }
 })
-
-/* 로그인 query */
-async function getUserData(id) {
-  return new Promise((resolve, reject) => {
-    let params = {
-      TableName: "login",
-      Key: {
-        "id": {S: id}
-      }
-    };
-    
-      docClient.get(params, (err, data) => {
-      if (err) {
-        console.log('dynamodb get item error')
-        throw err
-      }
-      else {
-        resolve(data)
-      }
-    });
-
-  })
-}
 
 module.exports = router;

@@ -1,12 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/stylesheets/devices.css" media="screen">
+    <link rel="stylesheet" href="/stylesheets/magnific-popup.css" media="screen">
+    <script class="u-script" type="text/javascript" src="/javascripts/devices.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="/javascripts/jquery.magnific-popup.min.js" defer=""></script>
     <title>Devices</title>
 </head>
+
 <body>
     device page
+    <ul class="deviceList">
+        <% if(msg == "성공") { %>
+        <% let frontData = JSON.parse(data) %>
+        <% for(let i=0; i<frontData.length; i++) { %>
+        <li id="deviceListForm">
+            <a style="cursor: pointer;" class="deviceListProperties">
+                <span id="deviceNum"><%= frontData[i].device_num %></span>
+                <span id="device"><%= frontData[i].device %></span>
+            </a>
+        </li>
+        <% } %>
+        <% } else { %>
+        <%= data %>
+        <% } %>
+    </ul>
+
+    <!-- Modal Box -->
+    <div class="modal">
+        <div class="modal-content">
+            <!-- Modal Content 1 -->
+            <div id="content1">
+                <span class="close">&times;</span>
+                <p id="device"></p>
+                <p id="deviceNum"></p>
+                <p id="deviceName"></p>
+                <img src="" id="deviceImg">
+                <table id="deviceTable">
+                    <tr>
+                        <td>용량</td>
+                        <td id="deviceCapacity"></td>
+                    </tr>
+                    <tr>
+                        <td>기능</td>
+                        <td id="deviceFunction"></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">제원</td>
+                        <td><span>규격: </span><span id="deviceSize"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span>재질: </span><span id="deviceTexture"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span>TYPE: </span><span id="deviceType"></span></td>
+                    </tr>
+                    <tr>
+                        <td>위치</td>
+                        <td id="deviceLocation"></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">설치업체</td>
+                        <td id="deviceInstallCompany"></td>
+                    </tr>
+                    <tr>
+                        <td><span>연락처: </span><span id="deviceInstallContact"></span></td>
+                    </tr>
+                </table>
+                <button id="showErrorList">조치현황 보기</button>
+                <button id="setUpdateData">내용 변경하기</button>
+                <button id="donotUpdate">취소</button>
+                <button id="doUpdate">수정</button>
+            </div>
+            <!-- Modal Content 2 -->
+            <div id="content2">
+                <span class="close">&times;</span>
+                <p id="errorList">조치현황</p>
+            </div>
+        </div>
+    </div>
 </body>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
 </html>
