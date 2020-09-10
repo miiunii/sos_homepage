@@ -1,7 +1,7 @@
 /* device properties */
 $('.deviceListProperties').on('click', async function () {
-    let deviceNum = $(this).find('#deviceNum').text();
-    let device = $(this).find('#device').text();
+    let deviceNum = $(this).find('#frontDeviceNum').text();
+    let device = $(this).find('#frontDevice').text();
 
     $.ajax({
         type: "POST",
